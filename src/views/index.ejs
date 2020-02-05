@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Main Page</title>
+	<style type="text/css">
+		.myForm {
+			border-style: solid;
+			border-width: 2px;
+			width: 50%;
+		}
+		.myForm input {
+			margin: 5px;
+		}
+	</style>
+</head>
+<body>
+	<center>
+		<h1>Results Page</h1>
+		<form class="myForm" method="POST" action="/form" autocomplete="off">
+			<label>Hall Ticket No.</label>
+			<input type="text" name="htno" ><br> 
+			<label>DOB</label>
+			<input type="date" name="dob"><br>
+			<% if (data) { %>
+  				<%- data %>
+			<% } %>
+			<br>
+			<!--  -->
+			<!--  -->
+			<br>
+			<% if (errorStatus) { %>
+  				<script type="text/javascript">
+  					alert('invalid captcha');
+  				</script>
+			<% } %>
+			<label>Enter Captcha</label>
+			<input type="text" name="captcha" required><br>
+			<input type="submit" name="submit">
+		</form>
+		<br>
+	</center>
+</body>
+</html>

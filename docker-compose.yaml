@@ -1,0 +1,48 @@
+version: '3'
+services:
+  node_server:
+    build: .
+    container_name: web_server
+    depends_on:
+     - dbserver
+    deploy:
+      resources:
+        limits:
+          cpus: '2.0'
+          memory: 800M
+        reservations:
+          cpus: '1.0'
+          memory: 512M
+    ports:
+      - "80:3000"
+    volumes:
+      - .:/code/src/
+   # networks:
+    #  vpcbr:
+     #   ipv4_address: 10.5.0.5
+  dbserver:
+    container_name: mysql_db
+    image: "mysql:latest"
+    environment:
+        - MYSQL_DATABASES=my-database
+        - MYSQL_ROOT_PASSWORD=root
+        - MYSQL_HOST=localhost
+        - MYSQL_PORT=3306
+        - MYSQL_USER=user
+        - MYSQL_PASSWORD=password
+        - MYSQL_MY_DATABASE=my-database
+    ports:
+        - "3306:3306"
+    #networks:
+     # vpcbr:
+      #  ipv4_address: 10.5.0.6
+    volumes:
+        - "./volumes/mysql:/var/lib/mysql"
+    deploy:
+      resources:
+        limits:
+          cpus: '2.0'
+          memory: 2Gi
+        reservations:
+          cpus: '1.0'
+          memory: 1Gi
