@@ -1,0 +1,25 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: node-web-server
+  labels:
+    app: node-web-server
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: node-web-server
+  template:
+    metadata:
+      labels:
+        app: node-web-server
+    spec:
+      containers:
+        - name: node-web-server-container
+#          imagePullPolicy: IfNotPresent
+          image: sprx7767/rsnode:latest
+          command: ["node","server.js"]
+          ports:
+          - containerPort: 3000
+
+
