@@ -1,7 +1,11 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <head>
 	<title>Main Page</title>
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+	 <meta charset="UTF-8">
+         <meta name="description" content="Node js Results Website">
 	<style type="text/css">
 		.myForm {
 			border-style: solid;
@@ -15,12 +19,12 @@
 </head>
 <body>
 	<center>
-		<h1>Results Page</h1>
+		<h1 style = "font-size:7vw;">Results Page</h1>
 		<form class="myForm" method="POST" action="/form" autocomplete="off">
-			<label>Hall Ticket No.</label>
-			<input type="text" name="htno" ><br> 
-			<label>DOB</label>
-			<input type="date" name="dob"><br>
+			<label for="htno" style="font-size:3vw;">Hall Ticket No.</label>
+			<input type="text" name="htno" id="htno"><br> 
+			<label for="dob" style="font-size:3vw;">DOB</label>
+			<input type="date" name="dob" id="dob"><br>
 			<% if (data) { %>
   				<%- data %>
 			<% } %>
@@ -33,8 +37,8 @@
   					alert('invalid captcha');
   				</script>
 			<% } %>
-			<label>Enter Captcha</label>
-			<input type="text" name="captcha" required><br>
+			<label for="captcha" style="font-size:3vw;">Enter Captcha</label>
+			<input type="text" name="captcha" id="captcha" required><br>
 			<input type="submit" name="submit">
 		</form>
 		<br>
