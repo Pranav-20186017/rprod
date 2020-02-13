@@ -24,6 +24,7 @@
 			<label for="htno" style="font-size:3vw;">Hall Ticket No.</label>
 			<input type="text" name="htno" id="htno"><br> 
 			<label for="dob" style="font-size:3vw;">DOB</label>
+			<input type="hidden" name="captchaTrue" value="<%- captchaTrue %>">
 			<input type="date" name="dob" id="dob"><br>
 			<% if (data) { %>
   				<%- data %>
@@ -33,9 +34,12 @@
 			<!--  -->
 			<br>
 			<% if (errorStatus) { %>
-  				<script type="text/javascript">
+  				<!-- <script type="text/javascript">
   					alert('invalid captcha');
-  				</script>
+  				</script> -->
+  				<h3 style="color: red">Wrong Captcha!</h3>
+
+
 			<% } %>
 			<label for="captcha" style="font-size:3vw;">Enter Captcha</label>
 			<input type="text" name="captcha" id="captcha" required><br>

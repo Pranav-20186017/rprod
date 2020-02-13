@@ -4,54 +4,68 @@ var bodyParser = require("body-parser");
 var svgCaptcha = require('svg-captcha');
 var mysql = require('mysql');
 
-
-var captchaText = '';
+// Express Config
 var app = express();
 app.use(express.static('public'))
+app.set('views', 'src/views/');
+
 var js_mysql,actual,itr;
-function getCaptcha() {
-	var captcha = svgCaptcha.create();
-	captchaText = captcha.text;
-	return captcha;
-}
+
 
 app.use(bodyParser.urlencoded({
 	extended: false
 }));
 app.use(bodyParser.json());
 
+
 app.set('view engine', 'ejs');
 
 
 app.get('/', function(req, res) {
-	console.log(req.connection.remoteAddress)
-	console.log(JSON.stringify(req.headers));
-	var svgTag = getCaptcha().data;
-	res.set({'Cache-Control': 'no-cache, no-store, must-revalidate','Pragma': 'no-cache', 'Expires': '0'});
+	// console.log(req.connection.remoteAddress)
+	console.log('--------------------------');
+	console.log('GET req made to "/"');
+	/*********************/
+
+	//Check if req is coming because of captcha
+	var captchaError = req.query.captchaError == 'true';
+
+	// Normal req 
+	var captcha = svgCaptcha.create();
+	var svgTag = captcha.data;
+	console.log(captcha.text)
+
+	res.set({'Cache-Control': 'no-cache, no-store, must-revalidate',
+			'Pragma': 'no-cache', 'Expires': '0'});
+
 	res.render('index', {
 		data: svgTag,
-		errorStatus: false,
+		captchaTrue: captcha.text,
+		errorStatus: captchaError,
 	});
 
+	console.log('--------------------------');
 });
 
+
 app.post('/form', function(req, res) {
-	console.log(req.connection.remoteAddress)	
-	console.log(JSON.stringify(req.headers));
-	var error = false;
-	var data = null;
-	if (req.body.captcha != captchaText) {
-		error = true;
-		data = getCaptcha().data;
-		res.render('index', {
-			data:data,
-			errorStatus:error
-		})
-	} else {
+	// console.log(req.connection.remoteAddress)	
+	// console.log(JSON.stringify(req.headers));
+	console.log('POST req made to "/form"');
+	console.log(req.body);
+	/*******************************/
+
+	if (req.body.captcha != req.body.captchaTrue) {
+		
+		res.redirect('/?captchaError=true')
+	} 
+	else {
 		var con = mysql.createConnection({
-			host: "dbserver",
+			// host: "dbserver",
+			host: "localhost",
 			user: "root",
-			password: "root",
+			// password: "root",
+			password: "",
 			database: "ks"
 		});
 		con.connect(function(err) {
