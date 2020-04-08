@@ -120,6 +120,6 @@ app.post('/form', function(req, res) {
 	}
 });
 
-app.listen(3000 , '192.168.29.53', function(){
+app.listen(3000 , '0.0.0.0', function(){
 console.log('server listening on port 3000');
 });
