@@ -3,7 +3,6 @@ var express = require('express');
 var bodyParser = require("body-parser");
 var svgCaptcha = require('svg-captcha');
 const redis = require("redis");
-const client = redis.createClient({"host":"localhost","port":6379,"db":1});
 
 // Express Config
 var app = express();
@@ -31,6 +30,9 @@ app.get('/', function(req, res) {
 	//Check if req is coming because of captcha
 	var captchaError = req.query.captchaError == 'true';
 
+	//Check if req is coming because of captcha
+	var htnoError = req.query.htnoError == 'true';
+
 	// Normal req 
 	var captcha = svgCaptcha.create();
 	var svgTag = captcha.data;
@@ -43,6 +45,7 @@ app.get('/', function(req, res) {
 		data: svgTag,
 		captchaTrue: captcha.text,
 		errorStatus: captchaError,
+		htError: htnoError
 	});
 
 	console.log('--------------------------');
@@ -56,11 +59,11 @@ app.post('/form', function(req, res) {
 	console.log(req.body);
 	/*******************************/
 
-	if (req.body.captcha != req.body.captchaTrue) {
+	// if (req.body.captcha != req.body.captchaTrue) {
 		
-		res.redirect('/?captchaError=true')
-	} 
-	else {
+	// 	// res.redirect('/?captchaError=true')
+	// } 
+	if (true) {
 		// var con = mysql.createConnection({
 		// 	 host: "dbserver",
 		// 	//host: "localhost",
@@ -83,19 +86,40 @@ app.post('/form', function(req, res) {
 		// 	res.render('res', {itr:itr})	
 		// 	});			
 		// 	client.quit();
+		const client = redis.createClient({"host":"13.126.28.47","port":6379,"db":1});
+		
 		var key = req.body.htno;
+		
 		client.get(key, function(err, reply) {
-			//console.log(reply);
-			var fmt = JSON.parse(reply);
-			console.log(fmt);
-			res.set({'Cache-Control': 'no-cache, no-store, must-revalidate','Pragma': 'no-cache', 'Expires': '0'});
-			var itr = fmt;
-			res.render('res', {itr:itr})	
+			// var fmt = JSON.parse(reply);
+			// console.log(fmt);
+			console.log('-----------------------------');
+			console.log('Client Get Error is ' + err);
+			console.log('-----------------------------');
+
+			console.log('-----------------------------');
+			console.log('Reply: ' + reply);
+			console.log('-----------------------------');
+
+			if (reply == null){
+				res.redirect('/?htnoError=true')
+			}
+
+			else {
+				res.set({'Cache-Control': 'no-cache, no-store, must-revalidate','Pragma': 'no-cache', 'Expires': '0'});
+				// var itr = fmt;
+
+				res.render('res', {reply:reply})
+			}	
 
 		  });
+
+		client.quit(function (err) {
+			console.log('Client Quit error is ' + err);
+		})
 	}
 });
 
-app.listen(3000 , '0.0.0.0', function(){
+app.listen(3000 , '192.168.29.53', function(){
 console.log('server listening on port 3000');
 });
