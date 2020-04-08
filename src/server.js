@@ -2,12 +2,13 @@
 var express = require('express');
 var bodyParser = require("body-parser");
 var svgCaptcha = require('svg-captcha');
-var mysql = require('mysql');
+const redis = require("redis");
+const client = redis.createClient({"host":"localhost","port":6379,"db":1});
 
 // Express Config
 var app = express();
 app.use(express.static('public'))
-app.set('views', 'src/views/');
+//app.set('views', './views');
 
 var js_mysql,actual,itr;
 
@@ -60,28 +61,38 @@ app.post('/form', function(req, res) {
 		res.redirect('/?captchaError=true')
 	} 
 	else {
-		var con = mysql.createConnection({
-			// host: "dbserver",
-			host: "localhost",
-			user: "root",
-			// password: "root",
-			password: "",
-			database: "ks"
-		});
-		con.connect(function(err) {
-			console.log(err)
-			console.log("Connected!");
-		});
-		var id = req.body.htno;
-		results = con.query('SELECT * FROM `marks` WHERE `id` = ?', id, function(error, results, fields) {
+		// var con = mysql.createConnection({
+		// 	 host: "dbserver",
+		// 	//host: "localhost",
+		// 	user: "root",
+		// 	// password: "",
+		// 	password: "_sprx77_",
+		// 	database: "ks"
+		// });
+		// con.connect(function(err) {
+		// 	console.log(err)
+		// 	console.log("Connected!");
+		// });
+		// var id = req.body.htno;
+		// results = con.query('SELECT * FROM `marks` WHERE `id` = ?', id, function(error, results, fields) {
 			
-			js_mysql = JSON.stringify(results);
-			actual = JSON.parse(js_mysql)
-			itr = actual["0"]
+		// 	js_mysql = JSON.stringify(results);
+		// 	actual = JSON.parse(js_mysql)
+		// 	itr = actual["0"]
+		// 	res.set({'Cache-Control': 'no-cache, no-store, must-revalidate','Pragma': 'no-cache', 'Expires': '0'});
+		// 	res.render('res', {itr:itr})	
+		// 	});			
+		// 	client.quit();
+		var key = req.body.htno;
+		client.get(key, function(err, reply) {
+			//console.log(reply);
+			var fmt = JSON.parse(reply);
+			console.log(fmt);
 			res.set({'Cache-Control': 'no-cache, no-store, must-revalidate','Pragma': 'no-cache', 'Expires': '0'});
+			var itr = fmt;
 			res.render('res', {itr:itr})	
-			});			
-			con.end();
+
+		  });
 	}
 });
 
