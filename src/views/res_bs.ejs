@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+   <head>
+      <title>Results Page</title>
+      <link rel="preload" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous" as="style" onload="this.onload=null;this.rel='stylesheet'">
+      <!-- <link rel="stylesheet" type="text/css" href="bootstrap.css"> -->
+
+      <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+   </head>
+   <body>
+      <div class="container justify-content-center">
+         <h1 class="display-3" align="center">Results Page</h1>
+         <br>
+         <div class="table-responsive-sm">
+            <table class="table">
+               <tr class="table-info">
+                  <th>Name: <%-reply.Name %></th>
+                  <th>Father Name: <%-reply.FatherName %></th>
+               </tr>
+               <tr class="table-info">
+                  <th>HT No: <%-reply.HTNO%></th>
+                  <th>College Code: <%-reply.HTNO.substring(2, 4) %></th>
+               </tr>
+            </table>
+         </div>
+         <div class="table-responsive-md">
+            <br>
+            <table class="table">
+               <thead class="thead-dark">
+                  <tr>
+                     <th>Sno</th>
+                     <th>Subject Code</th>
+                     <th>Subject Name</th>
+                     <th>Grade</th>
+                     <th>Credits</th>
+                  </tr>
+               </thead>
+               <% var count = 1 %>
+               <% for (var key in reply.Marks) { %>
+               <tr>
+                  <td><%-count %></td>
+                  <td><%-key %></td>
+                  <td><%-reply.Marks[key]["name"] %></td>
+                  <td><%-reply.Marks[key]["grade"] %></td>
+                  <td><%-reply.Marks[key]["credits"] %></td>
+               </tr>
+               <% count++ } %>
+            </table>
+         </div>
+         </div>
+      </div >
+   </body>
+</html>

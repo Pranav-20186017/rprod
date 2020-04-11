@@ -121,7 +121,7 @@ app.post('/form', function(req, res) {
             else {
                 // To make the server stateless
                 res.set({'Cache-Control': 'no-cache, no-store, must-revalidate','Pragma': 'no-cache', 'Expires': '0'});
-                res.render('res', {reply:JSON.parse(reply)})
+                res.render('res_bs', {reply:JSON.parse(reply)})
             }   
 
           }); //client get 
