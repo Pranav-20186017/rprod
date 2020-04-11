@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<head>
+    <title>Results Frontend</title>
+
+    <link rel="preload" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous" as="style" onload="this.onload=null;this.rel='stylesheet'">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <meta charset="UTF-8">
+    <meta name="description" content="Node js Results Website">
+</head>
+<body>
+        <div class="container-fluid justify-content-center">
+
+            <h1 class="display-3" align="center">Results Page</h1>
+            <br>
+
+            <% if (errorStatus) { %>
+            <div class="alert alert-danger alert-dismissible fade show" role="alert" id="captchaAlert">
+                <strong>You've entered invalid Captcha</strong>
+                <button onclick="closeAlert('captchaAlert')" type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <% } %>
+            
+            <% if (htError) { %>
+            <div class="alert alert-danger alert-dismissible fade show" role="alert" id="htAlert">
+                <strong>You've entered invalid Hall Ticket No.</strong>
+                <button onclick="closeAlert('htAlert')" type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <% } %>
+            
+            <form id="myForm" method="POST" action="/form">
+              <input type="hidden" id="captchaTrue" name="captchaTrue" value="<%- captchaTrue %>">
+              
+              <div class="form-group row justify-content-center">
+                <label for="htField" class="col-sm-2 col-form-label">Hall Ticket No.</label>
+                <div class="col-sm-3">
+                  <input type="text" name="htno" class="form-control" id="htField" placeholder="Hall Ticket No." required>
+                </div>
+              </div>
+
+              <div class="form-group row justify-content-center">
+                <label for="dob" class="col-sm-2 col-form-label">Date of Birth</label>
+                <div class="col-sm-3">
+                  <input type="date" class="form-control" id="dob">
+                </div>
+              </div>
+
+              <div class="form-group row justify-content-center">
+                <% if (data) { %>
+                    <%- data %>
+                <% } %>
+              </div>
+
+              <div class="form-group row justify-content-center">
+                <label for="captcha" class="col-sm-2 col-form-label">Enter above captcha</label>
+                <div class="col-sm-3">
+                  <input type="text" name="captcha" class="form-control" id="captcha" required>
+                </div>
+              </div>
+              <br>
+
+              <div class="form-group row justify-content-center">
+                <div class="col-3">
+                  <button type="submit" class="btn btn-primary">Get Results</button>
+                </div>
+              </div>
+
+            </form>
+        </div>
+        <br>
+    <script type="text/javascript">
+        console.log('Mundu results chusko ra munda!');
+
+        function closeAlert(alertId) {
+            document.getElementById(alertId).style.display = 'none';
+        }
+
+        // Captcha Checking
+        // function validateForm() {
+        //     var form = document.getElementById('myForm');
+        //     if (form.captchaTrue == form.captcha)
+
+        // }
+    </script>
+</body>
+</html>
