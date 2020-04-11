@@ -59,34 +59,13 @@ app.post('/form', function(req, res) {
 	console.log(req.body);
 	/*******************************/
 
-	// if (req.body.captcha != req.body.captchaTrue) {
+	if (req.body.captcha != req.body.captchaTrue) {
 		
-	// 	// res.redirect('/?captchaError=true')
-	// } 
-	if (true) {
-		// var con = mysql.createConnection({
-		// 	 host: "dbserver",
-		// 	//host: "localhost",
-		// 	user: "root",
-		// 	// password: "",
-		// 	password: "_sprx77_",
-		// 	database: "ks"
-		// });
-		// con.connect(function(err) {
-		// 	console.log(err)
-		// 	console.log("Connected!");
-		// });
-		// var id = req.body.htno;
-		// results = con.query('SELECT * FROM `marks` WHERE `id` = ?', id, function(error, results, fields) {
-			
-		// 	js_mysql = JSON.stringify(results);
-		// 	actual = JSON.parse(js_mysql)
-		// 	itr = actual["0"]
-		// 	res.set({'Cache-Control': 'no-cache, no-store, must-revalidate','Pragma': 'no-cache', 'Expires': '0'});
-		// 	res.render('res', {itr:itr})	
-		// 	});			
-		// 	client.quit();
-		const client = redis.createClient({"host":"13.126.28.47","port":6379,"db":1});
+		res.redirect('/?captchaError=true')
+	} 
+	else {
+		
+		const client = redis.createClient({"host":"ec2-13-233-93-126.ap-south-1.compute.amazonaws.com","port":6379,"db":1});
 		
 		var key = req.body.htno;
 		
@@ -109,7 +88,7 @@ app.post('/form', function(req, res) {
 				res.set({'Cache-Control': 'no-cache, no-store, must-revalidate','Pragma': 'no-cache', 'Expires': '0'});
 				// var itr = fmt;
 
-				res.render('res', {reply:reply})
+				res.render('res', {reply:JSON.parse(reply)})
 			}	
 
 		  });

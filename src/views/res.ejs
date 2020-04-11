@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!-- <!DOCTYPE html>
 <html>
 <head>
 	<title>Results</title>
@@ -12,5 +12,68 @@ table, th, td {
 		<h1>Posted to Results Page</h1>
 
 	<p><%-reply %></p>
+</body>
+</html>
+ -->
+
+ <!DOCTYPE html>
+<html>
+<head>
+	<title>Results Page</title>
+	<style>
+table {
+  font-family: arial, sans-serif;
+  border-collapse: collapse;
+  width: 70%;
+}
+
+td, th {
+  border: 1px solid #dddddd;
+  text-align: left;
+  padding: 8px;
+  background-color: #808080;
+}
+
+
+</style>
+</head>
+<body>
+	<center>
+	<h1>Results Page</h1>
+	<table>
+  <tr>
+    <th>Name:  <%-reply.Name %></th>
+    <th>Father Name: <%-reply.FatherName %></th>
+  </tr>
+   <tr>
+    <th>HT No <%-reply.HTNO%></th>
+    <th>College Code <%-reply.HTNO.substring(2, 4)%></th>
+  </tr>
+  
+</table>
+  <br>
+  <table>
+  <tr>
+    <th>Sno</th>
+    <th>Subject Code</th>
+    <th>Subject Name</th>
+    <th>Grade</th>
+    <th>Credits</th>
+  </tr>
+  <% var count = 0 %>
+  <% for (var key in reply.Marks) { %>
+  <tr>
+  	<td><%-count %></td>
+  	 <td><%-key %></td>
+    <td><%-reply.Marks[key]["name"] %></td>
+    <td><%-reply.Marks[key]["grade"] %></td>
+    <td><%-reply.Marks[key]["credits"] %></td>
+  </tr>
+  <% count++ } %>
+
+  
+</table>
+	</center>
+
 </body>
 </html>
