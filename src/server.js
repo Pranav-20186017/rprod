@@ -45,6 +45,9 @@ app.get('/', function(req, res) {
     // Check if req is coming because of htno
     var htnoError = req.query.htnoError == 'true';
 
+    // Check if req is coming because of backend
+    var backendError = req.query.backendError == 'true';
+
     // Normal req 
     var captcha = svgCaptcha.create();
     var svgTag = captcha.data;
@@ -58,7 +61,8 @@ app.get('/', function(req, res) {
         data: svgTag,
         captchaTrue: captcha.text,
         errorStatus: captchaError,
-        htError: htnoError
+        htError: htnoError,
+        backendError: backendError
     });
 
 });
@@ -99,23 +103,24 @@ app.post('/form', function(req, res) {
         res.redirect('/?captchaError=true');
 
     else {
-        // DNS : ec2-13-233-93-126.ap-south-1.compute.amazonaws.com
+        // DNS : ec2-15-206-88-91.ap-south-1.compute.amazonaws.com
         // Create Redis client
-        const client = redis.createClient({"host":"13.233.93.126","port":6379,"db":1});
+        const client = redis.createClient({"host":"15.206.88.90","port":6379,"db":1});
         
         var key = req.body.htno.trim();
         
         client.get(key, function(err, reply) {
 
             console.log('Client Get Error is ' + err);
+            if (err != null) {
+                res.redirect('/?backendError=true');
+                return;
+            }
 
             console.log('Reply: ' + reply);
 
             if (reply == null){
                 res.redirect('/?htnoError=true')
-                /*TODO: Reply can be null because of connection errors too!
-                        Find a better validation technique
-                */
             }
 
             else {
@@ -133,6 +138,6 @@ app.post('/form', function(req, res) {
 }); 
 
 // Start the server
-app.listen(3000 , '0.0.0.0', function(){
+app.listen(3000 , '192.168.29.53', function(){
     console.log('server listening on port 3000');
 });

@@ -34,6 +34,15 @@
                 </button>
             </div>
             <% } %>
+
+            <% if (backendError) { %>
+            <div class="alert alert-danger alert-dismissible fade show" role="alert" id="htAlert">
+                <strong>Our database is down/not up yet.</strong>
+                <button onclick="closeAlert('htAlert')" type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <% } %>
             
             <form id="myForm" method="POST" action="/form">
               <input type="hidden" id="captchaTrue" name="captchaTrue" value="<%- captchaTrue %>">
@@ -78,14 +87,15 @@
     <script type="text/javascript">
         function closeAlert(alertId) {
             document.getElementById(alertId).style.display = 'none';
+            var oldUrl = document.location.href;
+            var newUrl = oldUrl.split('?')[0];
+            console.log(newUrl);
+            if (history.pushState) {
+              window.history.pushState("object or string", "Title", newUrl);
+            } else {
+              document.location.href = newUrl;
+            }
         }
-
-        // Captcha Checking
-        // function validateForm() {
-        //     var form = document.getElementById('myForm');
-        //     if (form.captchaTrue == form.captcha)
-
-        // }
     </script>
 </body>
 </html>
