@@ -17,7 +17,7 @@ spec:
       containers:
         - name: node-web-server-container
 #          imagePullPolicy: IfNotPresent
-          image: sprx7767/rsnode:latest
+          image: sprx7767/rprod:latest
           command: ["node","server.js"]
           ports:
           - containerPort: 3000
