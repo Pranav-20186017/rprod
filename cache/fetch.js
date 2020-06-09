@@ -1,5 +1,5 @@
 const redis = require("redis");
-const client = redis.createClient({"host":"15.206.88.91","port":6379,"db":1});
+const client = redis.createClient({"host":"localhost","port":6379,"db":1});
  
 client.on("error", function(error) {
   console.error(error);

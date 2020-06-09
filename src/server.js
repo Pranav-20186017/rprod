@@ -105,7 +105,7 @@ app.post('/form', function(req, res) {
     else {
         // DNS : ec2-15-206-88-91.ap-south-1.compute.amazonaws.com
         // Create Redis client
-        const client = redis.createClient({"host":"15.206.88.90","port":6379,"db":1});
+        const client = redis.createClient({"host":"redis","port":6379,"db":0});
         
         var key = req.body.htno.trim();
         
