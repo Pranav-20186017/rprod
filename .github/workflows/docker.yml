@@ -17,7 +17,7 @@ jobs:
     
       - name: Docker Build
         working-directory: ./
-        run: docker build -t sprx7767/rprod:latest 
+        run: docker build -t sprx7767/rprod:latest .
       
       - name: Docker push
         run: docker push sprx7767/rprod
