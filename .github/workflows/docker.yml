@@ -20,4 +20,3 @@ jobs:
       
       - name: Docker push
         run: docker push sprx7767/rprod
-    
