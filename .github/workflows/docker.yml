@@ -16,6 +16,7 @@ jobs:
         run: echo ${{ secrets.DOCKER_PASSWORD }} | docker login --username ${{ secrets.DOCKER_USERNAME }} --password-stdin
     
       - name: Docker Build
+        working-directory: ./rprod
         run: docker build -t sprx7767/rprod:latest .
       
       - name: Docker push
