@@ -1,8 +1,0 @@
-kind: Service
-apiVersion: v1
-metadata:
-  name: dbserver
-spec:
-  type: ExternalName
-  externalName: ec2-15-206-160-21.ap-south-1.compute.amazonaws.com
- 
