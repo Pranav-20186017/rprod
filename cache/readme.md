@@ -1,5 +1,9 @@
-Install redis with 
+Run
 ```sh
-npm i redis
+python3 results.py
 ```
-and then run helper/gen.py
+followed by 
+
+```sh
+python3 mi.py > data.txt
+```
