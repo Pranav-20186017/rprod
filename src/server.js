@@ -105,7 +105,11 @@ app.post('/form', function(req, res) {
     else {
         // DNS : ec2-15-206-88-91.ap-south-1.compute.amazonaws.com
         // Create Redis client
+<<<<<<< Updated upstream
         const client = redis.createClient({"host":"redis","port":6379,"db":0});
+=======
+        const client = redis.createClient({"host":"15.206.88.91","port":6379,"db":1});
+>>>>>>> Stashed changes
         
         var key = req.body.htno.trim();
         
