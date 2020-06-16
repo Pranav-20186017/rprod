@@ -19,18 +19,29 @@ metadata:
 spec:
   selector:
     matchLabels:
-      app: redis # has to match .spec.template.metadata.labels
+      app: redis 
   serviceName: "redis"
-  replicas: 3 # by default is 1
+  replicas: 
   template:
     metadata:
       labels:
-        app: redis # has to match .spec.selector.matchLabels
+        app: redis 
     spec:
+      volumes:
+       - name: vol
+         hostPath:
+           path: /opt/data
       terminationGracePeriodSeconds: 10
       containers:
       - name: redis
         image: redis
+        volumeMounts:
+          - name: vol
+            mountPath: /data/
+        lifecycle:
+           postStart:
+              exec:
+                command: ["/bin/sh", "-c", "sleep 10; cat /data/dat.txt | redis-cli --pipe"]
         ports:
         - containerPort: 6379
           name: cache
