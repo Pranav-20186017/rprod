@@ -144,7 +144,7 @@ app.get('/results_test', function(req, res) {
 
     /*******************************/
     // Create Redis client
-    const client = redis.createClient({"host":"ec2-13-235-241-74.ap-south-1.compute.amazonaws.com","port":6379,"db":0});
+    const client = redis.createClient({"host":"redis","port":6379,"db":0});
     var key = req.query.htno.trim();
         
     client.get(key, function(err, reply) {
