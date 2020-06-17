@@ -7,4 +7,6 @@ sudo mv ./kubectl /usr/local/bin/kubectl
 aws s3api create-bucket --bucket sprx-kops-state --region us-east-1
 export KOPS_STATE_STORE=s3://sprx-kops-state
 ssh-keygen
+kops create cluster --name sprx.k8s.local --zones ap-south-1b --master-size t3.medium --node-size t3.medium --kubernetes-version 1.17.6
 kops create secret sshpublickey admin -i ~/.ssh/id_rsa.pub  --name sprx.k8s.local --state s3://sprx-kops-state
+kops update cluster --name sprx.k8s.local --yes
