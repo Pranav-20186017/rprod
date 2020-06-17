@@ -103,7 +103,6 @@ app.post('/form', function(req, res) {
         res.redirect('/?captchaError=true');
 
     else {
-        // DNS : ec2-15-206-88-91.ap-south-1.compute.amazonaws.com
         // Create Redis client
         const client = redis.createClient({"host":"redis","port":6379,"db":0});
         
