@@ -137,6 +137,44 @@ app.post('/form', function(req, res) {
     } // correct captcha - else
 }); 
 
+app.get('/results_test', function(req, res) {
+
+    console.log('--------------------------');
+    console.log('GET req made to "/results_test" from ' 
+        + req.connection.remoteAddress);
+
+    /*******************************/
+    // Create Redis client
+    const client = redis.createClient({"host":"ec2-13-235-241-74.ap-south-1.compute.amazonaws.com","port":6379,"db":0});
+    var key = req.query.htno.trim();
+        
+    client.get(key, function(err, reply) {
+
+        console.log('Client Get Error is ' + err);
+        if (err != null) {
+            res.redirect('/?backendError=true');
+            return;
+        }
+
+        console.log('Reply: ' + reply);
+
+        if (reply == null){
+            res.redirect('/?htnoError=true')
+        }
+
+        else {
+            // To make the server stateless
+            res.set({'Cache-Control': 'no-cache, no-store, must-revalidate','Pragma': 'no-cache', 'Expires': '0'});
+            res.render('res_bs', {reply:JSON.parse(reply)})
+            }   
+
+          }); //client get 
+
+        client.quit(function (err) {
+            console.log('Client Quit error is ' + err);
+        })
+});
+
 // Start the server
 app.listen(3000 , '0.0.0.0', function(){
     console.log('server listening on port 3000');
