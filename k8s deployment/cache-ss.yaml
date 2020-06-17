@@ -41,7 +41,7 @@ spec:
         lifecycle:
            postStart:
               exec:
-                command: ["/bin/sh", "-c", "sleep 1; cat /data/dat.txt | redis-cli --pipe"]
+                command: ["/bin/sh", "-c", "sleep 20; cat /data/dat.txt | redis-cli --pipe"]
         ports:
         - containerPort: 6379
           name: cache
