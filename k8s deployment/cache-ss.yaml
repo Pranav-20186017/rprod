@@ -19,14 +19,23 @@ metadata:
 spec:
   selector:
     matchLabels:
-      app: redis 
+      app: redis
   serviceName: "redis"
   replicas: 3
   template:
     metadata:
       labels:
-        app: redis 
+        app: redis
     spec:
+      affinity:
+        nodeAffinity:
+           requiredDuringSchedulingIgnoredDuringExecution:
+             nodeSelectorTerms:
+              - matchExpressions:
+                - key: type
+                  operator: In
+                  values:
+                   - cache
       volumes:
        - name: vol
          hostPath:
@@ -45,5 +54,4 @@ spec:
         ports:
         - containerPort: 6379
           name: cache
-
 
