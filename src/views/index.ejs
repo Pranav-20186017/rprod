@@ -24,7 +24,7 @@
     <br>
     <form class="myForm" method="POST" action="/form" autocomplete="off">
       <label for="htno">Hall Ticket No.</label>
-      <input type="text" name="htno" id="htno" value="BMDZ8ZRS3I"><br> 
+      <input type="text" name="htno" id="htno" value="S5ZKKOPFSO"><br> 
       <label for="dob">DOB</label>
       <input type="hidden" name="captchaTrue" value="<%- captchaTrue %>">
        <input type="date" name="dob" id="dob"><br> 
@@ -42,8 +42,10 @@
           <h3 style="color: red">Please enter valid Hall Ticket!!!</h3>
       <% } %>
       <label for="captcha">Enter Captcha</label>
-      <input type="text" name="captcha" id="captcha" required><br>
+      <input type="text" name="captcha" id="captcha" value="<%- captchaTrue %>" required><br>
+      <input type="hidden" name="_csrf" value="<%- csrfToken %>">
       <input type="submit" name="submit">
+
     </form>
     <br>
   </center>

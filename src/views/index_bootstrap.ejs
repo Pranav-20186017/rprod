@@ -50,7 +50,7 @@
               <div class="form-group row justify-content-center">
                 <label for="htField" class="col-sm-2 col-form-label">Hall Ticket No.</label>
                 <div class="col-sm-3">
-                  <input type="text" onkeyup="this.value = this.value.toUpperCase();" name="htno" class="form-control" id="htField" placeholder="E.g: 17ds1a1215" required>
+                  <input type="text" onkeyup="this.value = this.value.toUpperCase();" name="htno" class="form-control" id="htField" placeholder="E.g: 17ds1a1215" value="S5ZKKOPFSO" required>
                 </div>
               </div>
 
@@ -70,7 +70,7 @@
               <div class="form-group row justify-content-center">
                 <label for="captcha" class="col-sm-2 col-form-label">Enter above captcha</label>
                 <div class="col-sm-3">
-                  <input type="text" name="captcha" class="form-control" id="captcha" required>
+                  <input type="text" name="captcha" class="form-control" id="captcha" value="<%- captchaTrue %>" required>
                 </div>
               </div>
               <br>
@@ -80,7 +80,7 @@
                   <button type="submit" class="btn btn-primary">Get Results</button>
                 </div>
               </div>
-
+              <input type="hidden" name="_csrf" value="<%= csrfToken %>">
             </form>
         </div>
         <br>

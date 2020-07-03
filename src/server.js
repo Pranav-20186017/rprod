@@ -3,17 +3,22 @@ var express = require('express');
 var bodyParser = require("body-parser");
 var svgCaptcha = require('svg-captcha');
 const redis = require("redis");
+var cookieParser = require('cookie-parser');
+var compression = require('compression');
 
+var csrf = require('csurf')
+var csrfProtection = csrf({ cookie: true })
 
+var parseForm = bodyParser.urlencoded({ extended: false })
 // Express Config
 var app = express();
 app.use(express.static('public'));
-
+app.use(cookieParser())
+app.use(compression())
 // For parsing request bodies
-//extended set to true for csrf will need to change in future
-app.use(bodyParser.urlencoded({
-    extended: false
-}));
+// app.use(bodyParser.urlencoded({
+//     extended: false
+// }));
 app.use(bodyParser.json());
 app.set('view engine', 'ejs');
 
@@ -34,7 +39,7 @@ Main Route
 |                                      |
 +--------------------------------------+
 */
-app.get('/', function(req, res) {
+app.get('/', csrfProtection, function(req, res) {
     console.log('--------------------------');
     console.log('GET' + ' req made to "/" from ' 
         + req.connection.remoteAddress);
@@ -63,6 +68,7 @@ app.get('/', function(req, res) {
         errorStatus: captchaError,
         htError: htnoError,
         backendError: backendError,
+        csrfToken: req.csrfToken()
     });
 
 });
@@ -87,12 +93,12 @@ Form route
 |                                                          |
 +----------------------------------------------------------+
 */
-app.post('/form', function(req, res) {
+app.post('/form',parseForm ,csrfProtection ,function(req, res) {
 
     console.log('--------------------------');
     console.log('POST req made to "/" from ' 
         + req.connection.remoteAddress);
-
+    console.log("Request size in bytes: " + req.socket.bytesRead)
     console.log(req.body);
     /*******************************/
 
@@ -102,7 +108,7 @@ app.post('/form', function(req, res) {
 
     else {
         // Create Redis client
-        const client = redis.createClient({"host":"redis","port":6379,"db":0});
+        const client = redis.createClient({"host":"ec2-13-233-229-209.ap-south-1.compute.amazonaws.com","port":6379,"db":0});
         
         var key = req.body.htno.trim();
         
