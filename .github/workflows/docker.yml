@@ -18,10 +18,10 @@ jobs:
            DOCKER_USER: ${{ secrets.DOCKER_USER }}
            DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
         run: |
-             env
-      - name: docker build
-        run: |
-            docker build -t $(echo $DOCKER_USER)/rprod:latest .
+             echo $DOCKER_USER
+#       - name: docker build
+#         run: |
+#             docker build -t $(echo $DOCKER_USER)/rprod:latest .
 #       - name: docker psuh
 #         run: |
 #             docker push $DOCKER_USER/rprod:latest 
