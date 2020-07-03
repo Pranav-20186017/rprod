@@ -13,12 +13,12 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
-      - name: docker login
-        env:
-           DOCKER_USER: ${{ secrets.DOCKER_USER }}
-           DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
+      - name: docker login       
         run: |
-             echo $DOCKER_USER
+             export DOCKER_USER=${{ secrets.DOCKER_USER }} && DOCKER_PASSWORD=${{ secrets.DOCKER_PASSWORD }}
+      - name: envi
+        run: |
+         echo $DOCKER_USER
 #       - name: docker build
 #         run: |
 #             docker build -t $(echo $DOCKER_USER)/rprod:latest .
