@@ -1,7 +1,7 @@
 
 import json
 
-with open('results.json') as f:
+with open('results_million.json') as f:
   data = json.load(f)
 keys = data.keys()
 for _ in keys:

@@ -27,11 +27,20 @@ spec:
       labels:
         app: redis
     spec:
+      affinity:
+        nodeAffinity:
+           requiredDuringSchedulingIgnoredDuringExecution:
+             nodeSelectorTerms:
+              - matchExpressions:
+                - key: type
+                  operator: In
+                  values:
+                   - cache
       volumes:
        - name: vol
          hostPath:
            path: /opt/data
-      terminationGracePeriodSeconds: 10
+clear      terminationGracePeriodSeconds: 10
       containers:
       - name: redis
         image: redis

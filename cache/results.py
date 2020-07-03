@@ -48,7 +48,7 @@ json_ = """{
         """
 # pp.pprint(subjects)
 
-LIMIT = 1000000
+LIMIT = 150
 alpha = string.ascii_uppercase
 data = {}
 keys_fp = open('keys_million.txt', 'w')
