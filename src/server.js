@@ -2,19 +2,27 @@
 var express = require('express');
 var bodyParser = require("body-parser");
 var svgCaptcha = require('svg-captcha');
+var compression = require('compression');
 const redis = require("redis");
+const csurf = require('csurf');
+const cookieParser = require('cookie-parser');
 
 // Express Config
 var app = express();
 app.use(express.static('public'));
-
+app.use(compression())
+//adding middleware for csrf
+const csrfMiddleware = csurf({
+    cookie: true
+  });
 // For parsing request bodies
+//extended set to true for csrf will need to change in future
 app.use(bodyParser.urlencoded({
     extended: false
 }));
 app.use(bodyParser.json());
-
-
+app.use(cookieParser());
+app.use(csrfMiddleware);
 app.set('view engine', 'ejs');
 
 /*
@@ -38,7 +46,6 @@ app.get('/', function(req, res) {
     console.log('--------------------------');
     console.log('GET' + ' req made to "/" from ' 
         + req.connection.remoteAddress);
-
     // Check if req is coming because of captcha
     var captchaError = req.query.captchaError == 'true';
 
@@ -48,9 +55,11 @@ app.get('/', function(req, res) {
     // Check if req is coming because of backend
     var backendError = req.query.backendError == 'true';
 
+
     // Normal req 
     var captcha = svgCaptcha.create();
     var svgTag = captcha.data;
+    var csrf = req.csrfToken()
     console.log('Captcha: ' + captcha.text);
 
     res.set({'Cache-Control': 'no-cache, no-store, must-revalidate',
@@ -62,7 +71,8 @@ app.get('/', function(req, res) {
         captchaTrue: captcha.text,
         errorStatus: captchaError,
         htError: htnoError,
-        backendError: backendError
+        backendError: backendError,
+        csrf: csrf
     });
 
 });
@@ -71,8 +81,6 @@ app.get('/', function(req, res) {
 Form route
 - Redirects in case of captcha or HTNO issues
 - Serves results otherwise
-TODO:
-- CSRF Token
 +----------------------------------------------------------+
 |                                                          |
 |                     Request                              |

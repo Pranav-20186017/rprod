@@ -10,9 +10,11 @@
   "author": "Pranav Surampudi, Kartheek Surampudi",
   "license": "ISC",
   "dependencies": {
+    "compression": "^1.7.4",
+    "cookie-parser": "^1.4.5",
+    "csurf": "^1.11.0",
     "ejs": "^3.0.1",
     "express": "^4.17.1",
-    "mysql": "^2.18.1",
     "package.json": "^2.0.1",
     "redis": "^3.0.2",
     "svg-captcha": "^1.4.0"
