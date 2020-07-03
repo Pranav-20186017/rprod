@@ -21,7 +21,7 @@ jobs:
              env
       - name: docker build
         run: |
-            docker build -t $DOCKER_USER/rprod:latest .
+            docker build -t sprx7767/rprod:latest .
 #       - name: docker psuh
 #         run: |
 #             docker push $DOCKER_USER/rprod:latest 
