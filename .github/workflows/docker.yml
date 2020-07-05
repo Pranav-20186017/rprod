@@ -22,9 +22,9 @@ jobs:
         docker login -u $DOCKER_USER -p $DOCKER_PASSWORD
     - name: docker build
       run: |
-        docker build -t $REPO .
+        docker build -t sprx7767/rprod:latest .
     - name: docker push
       run: |
-        docker push $REPO
+        docker push sprx7767/rprod:latest
         
             
