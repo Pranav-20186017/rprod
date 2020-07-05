@@ -8,9 +8,7 @@ on:
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
-
     steps:
     - uses: actions/checkout@v2
     - name: docker login
@@ -26,5 +24,3 @@ jobs:
     - name: docker push
       run: |
         docker push sprx7767/rprod:latest
-        
-            
