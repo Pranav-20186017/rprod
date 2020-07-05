@@ -29,8 +29,8 @@ spec:
     spec:
       volumes:
        - name: vol
-         hostPath:
-           path: /opt/data
+         persistentVolumeClaim:
+           claimName: cache-pv-claim
       terminationGracePeriodSeconds: 10
       containers:
       - name: redis
