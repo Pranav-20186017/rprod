@@ -3,7 +3,7 @@ kind: PersistentVolumeClaim
 metadata:
   name: cache-pv-claim
 spec:
-  storageClassName: manual
+  storageClassName: gp2
   accessModes:
     - ReadWriteOnce
   resources:
