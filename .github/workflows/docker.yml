@@ -17,14 +17,14 @@ jobs:
       env:
         DOCKER_USER: ${{ secrets.DOCKER_USERNAME }}
         DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
-        REPO: rprod
+        REPO: ${{ secrets.REPO }}
       run: |
         docker login -u $DOCKER_USER -p $DOCKER_PASSWORD
     - name: docker build
       run: |
-        docker build -t $DOCKER_USER/$REPO:latest .
+        docker build -t $REPO .
     - name: docker push
       run: |
-        docker push $DOCKER_USER/$REPO:latest
+        docker push $REPO
         
             
