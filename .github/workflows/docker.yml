@@ -12,9 +12,12 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: docker/build-push-action@v1
-      with:
-       username: ${{ secrets.DOCKER_USERNAME }}
-       password: ${{ secrets.DOCKER_PASSWORD }}
-       repository: sprx7767/rprod
-       tags: latest
+    - uses: actions/checkout@v2
+    - name: docker login
+      env:
+        DOCKER_USER: sprx7767
+        DOCKER_PASSWORD: "#sprx7767"
+      run: |
+        docker login -u $DOCKER_USER -p $DOCKER_PASSWORD
+        
+            
