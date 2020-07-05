@@ -108,7 +108,7 @@ app.post('/form',parseForm ,csrfProtection ,function(req, res) {
 
     else {
         // Create Redis client
-        const client = redis.createClient({"host":"ec2-13-233-229-209.ap-south-1.compute.amazonaws.com","port":6379,"db":0});
+        const client = redis.createClient({"host":"redis","port":6379,"db":0});
         
         var key = req.body.htno.trim();
         
