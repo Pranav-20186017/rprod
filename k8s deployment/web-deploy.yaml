@@ -21,3 +21,5 @@ spec:
           command: ["node","server.js"]
           ports:
           - containerPort: 3000
+      imagePullSecrets:
+        - name: regcred
