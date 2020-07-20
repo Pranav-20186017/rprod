@@ -5,6 +5,16 @@ var svgCaptcha = require('svg-captcha');
 const redis = require("redis");
 var cookieParser = require('cookie-parser');
 var compression = require('compression');
+var morgan = require('morgan');
+var uuid = require('node-uuid')
+ 
+morgan.token('id', function getId (req) {
+  return req.id
+})
+
+morgan.token('req_size', function getReqSize(req) {
+    return req.socket.bytesRead.toString() + " " + "bytes";
+})
 
 var csrf = require('csurf')
 var csrfProtection = csrf({ cookie: true })
@@ -15,6 +25,9 @@ var app = express();
 app.use(express.static('public'));
 app.use(cookieParser())
 app.use(compression())
+//logging config
+app.use(assignId);
+app.use(morgan(':id - :remote-addr  :remote-user  [:date[clf]] - ":method :url HTTP/:http-version" - :req_size - :status  :res[content-length] - :response-time ms  ":referrer" - ":user-agent"', 'pretty'));
 // For parsing request bodies
 // app.use(bodyParser.urlencoded({
 //     extended: false
@@ -40,9 +53,6 @@ Main Route
 +--------------------------------------+
 */
 app.get('/', csrfProtection, function(req, res) {
-    console.log('--------------------------');
-    console.log('GET' + ' req made to "/" from ' 
-        + req.connection.remoteAddress);
     // Check if req is coming because of captcha
     var captchaError = req.query.captchaError == 'true';
 
@@ -56,7 +66,6 @@ app.get('/', csrfProtection, function(req, res) {
     // Normal req 
     var captcha = svgCaptcha.create();
     var svgTag = captcha.data;
-    console.log('Captcha: ' + captcha.text);
 
     res.set({'Cache-Control': 'no-cache, no-store, must-revalidate',
             'Pragma': 'no-cache', 'Expires': '0'});
@@ -94,12 +103,6 @@ Form route
 +----------------------------------------------------------+
 */
 app.post('/form',parseForm ,csrfProtection ,function(req, res) {
-
-    console.log('--------------------------');
-    console.log('POST req made to "/" from ' 
-        + req.connection.remoteAddress);
-    console.log("Request size in bytes: " + req.socket.bytesRead)
-    console.log(req.body);
     /*******************************/
 
     // Check for captcha error
@@ -114,13 +117,13 @@ app.post('/form',parseForm ,csrfProtection ,function(req, res) {
         
         client.get(key, function(err, reply) {
 
-            console.log('Client Get Error is ' + err);
+            console.error('Client Get Error is ' + err);
             if (err != null) {
                 res.redirect('/?backendError=true');
                 return;
             }
 
-            console.log('Reply: ' + reply);
+            console.error('Reply: ' + reply);
 
             if (reply == null){
                 res.redirect('/?htnoError=true')
@@ -135,17 +138,12 @@ app.post('/form',parseForm ,csrfProtection ,function(req, res) {
           }); //client get 
 
         client.quit(function (err) {
-            console.log('Client Quit error is ' + err);
+            console.error('Client Quit error is ' + err);
         })
     } // correct captcha - else
 }); 
 
 app.get('/results_test', function(req, res) {
-
-    console.log('--------------------------');
-    console.log('GET req made to "/results_test" from ' 
-        + req.connection.remoteAddress);
-
     /*******************************/
     // Create Redis client
     const client = redis.createClient({"host":"redis","port":6379,"db":0});
@@ -153,13 +151,13 @@ app.get('/results_test', function(req, res) {
         
     client.get(key, function(err, reply) {
 
-        console.log('Client Get Error is ' + err);
+        console.error('Client Get Error is ' + err);
         if (err != null) {
             res.redirect('/?backendError=true');
             return;
         }
 
-        console.log('Reply: ' + reply);
+        console.error('Reply: ' + reply);
 
         if (reply == null){
             res.redirect('/?htnoError=true')
@@ -173,7 +171,7 @@ app.get('/results_test', function(req, res) {
 
           }); //client get 
 
-        client.quit(function (err) {
+        client.error(function (err) {
             console.log('Client Quit error is ' + err);
         })
 });
@@ -182,3 +180,9 @@ app.get('/results_test', function(req, res) {
 app.listen(3000 , '0.0.0.0', function(){
     console.log('server listening on port 3000');
 });
+
+//uuid for logs to the server
+function assignId (req, res, next) {
+    req.id = uuid.v4()
+    next()
+  }
