@@ -7,9 +7,9 @@ var cookieParser = require('cookie-parser');
 var compression = require('compression');
 var morgan = require('morgan');
 var uuid = require('node-uuid')
- 
-morgan.token('id', function getId (req) {
-  return req.id
+
+morgan.token('id', function getId(req) {
+    return req.id
 })
 
 morgan.token('req_size', function getReqSize(req) {
@@ -52,7 +52,7 @@ Main Route
 |                                      |
 +--------------------------------------+
 */
-app.get('/', csrfProtection, function(req, res) {
+app.get('/', csrfProtection, function (req, res) {
     // Check if req is coming because of captcha
     var captchaError = req.query.captchaError == 'true';
 
@@ -67,8 +67,10 @@ app.get('/', csrfProtection, function(req, res) {
     var captcha = svgCaptcha.create();
     var svgTag = captcha.data;
 
-    res.set({'Cache-Control': 'no-cache, no-store, must-revalidate',
-            'Pragma': 'no-cache', 'Expires': '0'});
+    res.set({
+        'Cache-Control': 'no-cache, no-store, must-revalidate',
+        'Pragma': 'no-cache', 'Expires': '0'
+    });
 
     // Set statuses and render form
     res.render('index_bootstrap', {
@@ -102,7 +104,7 @@ Form route
 |                                                          |
 +----------------------------------------------------------+
 */
-app.post('/form',parseForm ,csrfProtection ,function(req, res) {
+app.post('/form', parseForm, csrfProtection, function (req, res) {
     /*******************************/
 
     // Check for captcha error
@@ -111,11 +113,11 @@ app.post('/form',parseForm ,csrfProtection ,function(req, res) {
 
     else {
         // Create Redis client
-        const client = redis.createClient({"host":"redis","port":6379,"db":0});
-        
+        const client = redis.createClient({ "host": "redis", "port": 6379, "db": 0 });
+
         var key = req.body.htno.trim();
-        
-        client.get(key, function(err, reply) {
+
+        client.get(key, function (err, reply) {
 
             console.error('Client Get Error is ' + err);
             if (err != null) {
@@ -125,31 +127,31 @@ app.post('/form',parseForm ,csrfProtection ,function(req, res) {
 
             console.error('Reply: ' + reply);
 
-            if (reply == null){
+            if (reply == null) {
                 res.redirect('/?htnoError=true')
             }
 
             else {
                 // To make the server stateless
-                res.set({'Cache-Control': 'no-cache, no-store, must-revalidate','Pragma': 'no-cache', 'Expires': '0'});
-                res.render('res_bs', {reply:JSON.parse(reply)})
-            }   
+                res.set({ 'Cache-Control': 'no-cache, no-store, must-revalidate', 'Pragma': 'no-cache', 'Expires': '0' });
+                res.render('res_bs', { reply: JSON.parse(reply) })
+            }
 
-          }); //client get 
+        }); //client get 
 
         client.quit(function (err) {
             console.error('Client Quit error is ' + err);
         })
     } // correct captcha - else
-}); 
+});
 
-app.get('/results_test', function(req, res) {
+app.get('/results_test', function (req, res) {
     /*******************************/
     // Create Redis client
-    const client = redis.createClient({"host":"redis","port":6379,"db":0});
+    const client = redis.createClient({ "host": "redis", "port": 6379, "db": 0 });
     var key = req.query.htno.trim();
-        
-    client.get(key, function(err, reply) {
+
+    client.get(key, function (err, reply) {
 
         console.error('Client Get Error is ' + err);
         if (err != null) {
@@ -159,30 +161,30 @@ app.get('/results_test', function(req, res) {
 
         console.error('Reply: ' + reply);
 
-        if (reply == null){
+        if (reply == null) {
             res.redirect('/?htnoError=true')
         }
 
         else {
             // To make the server stateless
-            res.set({'Cache-Control': 'no-cache, no-store, must-revalidate','Pragma': 'no-cache', 'Expires': '0'});
-            res.render('res_bs', {reply:JSON.parse(reply)})
-            }   
+            res.set({ 'Cache-Control': 'no-cache, no-store, must-revalidate', 'Pragma': 'no-cache', 'Expires': '0' });
+            res.render('res_bs', { reply: JSON.parse(reply) })
+        }
 
-          }); //client get 
+    }); //client get 
 
-        client.error(function (err) {
-            console.log('Client Quit error is ' + err);
-        })
+    client.error(function (err) {
+        console.log('Client Quit error is ' + err);
+    })
 });
 
 // Start the server
-app.listen(3000 , '0.0.0.0', function(){
+app.listen(3000, '0.0.0.0', function () {
     console.log('server listening on port 3000');
 });
 
 //uuid for logs to the server
-function assignId (req, res, next) {
+function assignId(req, res, next) {
     req.id = uuid.v4()
     next()
-  }
+}
